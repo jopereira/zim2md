@@ -39,8 +39,9 @@ def compatible(path=None, infile=None, lines=None):
 
 def translate(text: List[str], path:str="", nbpath:str="") -> List[str]:
     """Discards the first four lines. All other lines are converted."""
-    # The first 4 lines usually contain file format info.
-    text = text[4:]
+    # The first lines usually contain file format info and the title.
+    while len(text)>0 and (text[0].startswith("Content-Type:") or text[0].startswith("Wiki-Format:") or text[0].startswith("Creation-Date:") or text[0].strip()=="" or text[0].startswith('======') or text[0].startswith("Created ")):
+        text = text[1:]
     headline_nr = 0
     current_ind = 0
     title = ""
