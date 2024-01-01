@@ -106,7 +106,7 @@ def translate(text: List[str], path:str="", nbpath:str="") -> List[str]:
 
         # @tags and +SubPageReferences
         line = sub(r"^@(\S+)", r"#\g<1>", line)
-        line = sub(r"\s+@(\S+)", r"#\g<1>", line)
+        line = sub(r"(\s+)@(\S+)", r"\g<1>#\g<2>", line)
         line = sub(r"\[\[\+(\S+?)\]\]", r"[[\g<1>]]", line)
 
         # rich text formatting
