@@ -148,8 +148,14 @@ if __name__ == "__main__":
         for _file in Path(_path).rglob("*.txt"):
             with open(_file, 'r') as _f:
                 lines = _f.readlines()
-                outpath = str(os.path.relpath(_file, _path))
-                outpath = os.path.join(_newpath, outpath)
+                dirpath = sub(r"\.txt$", "", str(_file))
+                if os.path.isdir(dirpath):
+                    outpath = str(os.path.relpath(dirpath, _path))
+                    outpath = os.path.join(_newpath, outpath)
+                    outpath = os.path.join(outpath, os.path.basename(_file))
+                else:
+                    outpath = str(os.path.relpath(_file, _path))
+                    outpath = os.path.join(_newpath, outpath)
                 try:
                     os.makedirs(os.path.dirname(outpath))
                 except FileExistsError:
