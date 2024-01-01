@@ -8,7 +8,7 @@ Usage:
 """
 
 import os
-from re import sub, fullmatch, findall
+from re import sub, subn, fullmatch, findall
 from pathlib import Path
 from datetime import datetime
 from typing import List
@@ -98,10 +98,14 @@ def translate(text: List[str], path:str="", nbpath:str="") -> List[str]:
         line = sub(r"(file://\S+)", r"[\g<1>](\g<1>)", line)
 
         # Lists
-        line = sub(r"^(\s*)\[\*\]", r"\g<1>- [*]", line, count=1)
-        line = sub(r"^(\s*)\[x\]", r"\g<1>- [x]", line, count=1)
-        line = sub(r"^(\s*)\[>\]", r"\g<1>- [>]", line, count=1)
-        line = sub(r"^(\s*)\[ \]", r"\g<1>- [ ]", line, count=1)
+        line,chgs = subn(r"^(\s*)\[([ *>x])\]", r"\g<1>- [\g<2>]", line, count=1)
+        if chgs == 1:
+            line = sub(r"!!!", r" 🔺", line)
+            line = sub(r"!!", r" ⏫", line)
+            line = sub(r"!", r" 🔼", line)
+            line = sub(r"<\s*", r"📅", line)
+            line = sub(r">\s*", r"⏳", line)
+
         # TODO indented list elements without dots or checkboxes
 
         # @tags and +SubPageReferences
